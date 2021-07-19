@@ -10,7 +10,7 @@ A miniature device depicting the relative position of the planets in Solar Syste
 * Pico Display Pack
 
 
-### Installation
+### Software
 #### MicroPython
 The software is written in MicroPython 1.15 and uses a custom build from Pimorony which includes drivers for the display.
 Download it from the official Pimorony repository [here](https://github.com/pimoroni/pimoroni-pico/releases/tag/v0.2.1).
@@ -26,7 +26,7 @@ To upload and configure your Pico Solar System you will need to install rshell. 
 pip3 install rshell
 ```
 
-#### Abe
+#### Installing Pico Solar System
 1. Download Pico Solar System
 ```
 git clone https://github.com/dr-mod/pico-solar-system.git
@@ -48,4 +48,13 @@ import time
 import ds3231
 rtc = ds3231.ds3231()
 rtc.set_time(time.time())
+```
+
+### Support the project
+If you would like to support further development of this or any new projects that I make, consider donating:
+```
+BTC:    36Z9R2mQVdeN58GpGwE7VW6Zjk6yK4MptD
+ETH:    0x13992b783fbb1ff3a2cc04f2fac04691614bd68e
+DOGE:   DLW5joMTi8Vm5a1frZHgW8LcPWo4oLqfUZ
+LTC:    LiZTtdgqALLbU5YkYkBzhBFHSsvBv2Ghot
 ```
