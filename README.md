@@ -50,6 +50,9 @@ rtc = ds3231.ds3231()
 rtc.set_time(time.time())
 ```
 
+### Case 
+A 3d printable case for this project can be found [here](https://www.thingiverse.com/thing:4916482).
+
 ### Support the project
 If you would like to support further development of this or any new projects that I make, consider donating:
 ```
