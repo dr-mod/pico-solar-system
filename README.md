@@ -2,7 +2,7 @@
 
 A miniature device depicting the relative position of the planets in Solar System.
 
-![pico](docs/pico_s.jpeg)
+![pico](docs/pico.jpeg)
 
 ### Hardware
 * Raspberry Pi Pico
@@ -54,10 +54,6 @@ rtc.set_time(time.time())
 A 3d printable case for this project can be found [here](https://www.thingiverse.com/thing:4916482).
 
 ### Support the project
-If you would like to support further development of this or any new projects that I make, consider donating:
-```
-BTC:    36Z9R2mQVdeN58GpGwE7VW6Zjk6yK4MptD
-ETH:    0x13992b783fbb1ff3a2cc04f2fac04691614bd68e
-DOGE:   DLW5joMTi8Vm5a1frZHgW8LcPWo4oLqfUZ
-LTC:    LiZTtdgqALLbU5YkYkBzhBFHSsvBv2Ghot
-```
+If you would like to support what I do and keep me caffeinated, you can do it here:
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/drmod)
