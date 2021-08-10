@@ -49,7 +49,7 @@ import ds3231
 rtc = ds3231.ds3231()
 rtc.set_time(time.time())
 ```
-This may be in GMT time. If it is, and you want to offset your timezone in seconds, you can do that (example here is EDT)
+This may be in UTC time. If it is, and you want to offset your timezone in seconds, you can do that (example here is EDT)
 ```
 rtc.set_time(time.time()-14400)
 ```
