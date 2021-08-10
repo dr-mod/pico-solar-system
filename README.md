@@ -49,6 +49,10 @@ import ds3231
 rtc = ds3231.ds3231()
 rtc.set_time(time.time())
 ```
+This may be in GMT time. If it is, and you want to offset your timezone in seconds, you can do that (example here is EST)
+```
+rtc.set_time(time.time()-14400)
+```
 
 ### Case 
 A 3d printable case for this project can be found [here](https://www.thingiverse.com/thing:4916482).
