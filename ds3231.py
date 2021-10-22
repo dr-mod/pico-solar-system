@@ -10,8 +10,12 @@ class ds3231(object):
     status_reg = 0x0f
 
     def __init__(self, i2c_port = 0, i2c_scl = 21, i2c_sda = 20):
-        self.bus = I2C(i2c_port, scl=Pin(i2c_scl), sda=Pin(i2c_sda))
-
+        try:
+            self.bus = I2C(i2c_port, scl=Pin(i2c_scl), sda=Pin(i2c_sda))
+            self.bus.readfrom_mem(int(self.address), int(self.start_reg), 7)
+        except OSError:
+            self.bus = I2C(1, scl=Pin(7), sda=Pin(6))
+            self.bus.readfrom_mem(int(self.address), int(self.start_reg), 7)
 
     def set_time(self, new_time):
         ti = time.localtime(new_time)
