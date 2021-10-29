@@ -14,6 +14,7 @@ class ds3231(object):
             self.bus = I2C(i2c_port, scl=Pin(i2c_scl), sda=Pin(i2c_sda))
             self.bus.readfrom_mem(int(self.address), int(self.start_reg), 7)
         except OSError:
+            # Fall back to i2c port 1 (pins 6,7) used by earlier, but still common, versions of the Waveshare RTC module
             self.bus = I2C(1, scl=Pin(7), sda=Pin(6))
             self.bus.readfrom_mem(int(self.address), int(self.start_reg), 7)
 
