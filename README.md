@@ -51,7 +51,7 @@ rtc.set_time(time.time())
 ```
 
 ### Case 
-A 3d printable case for this project can be found [here](https://www.thingiverse.com/thing:4916482).
+A 3d printable case for this project can be found [here](https://www.printables.com/model/237722-raspberry-pi-pico-rtc-display-case).
 
 ### Support the project
 If you would like to support what I do and keep me caffeinated, you can do it here:
