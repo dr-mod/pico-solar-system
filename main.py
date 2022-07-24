@@ -1,4 +1,5 @@
 from picographics import PicoGraphics, DISPLAY_PICO_DISPLAY
+from pimoroni import Button, RGBLED
 import time
 import math
 import gc
@@ -9,7 +10,14 @@ gc.enable()
 backlight = 0.7
 plusDays = 0
 change = 0
+
 display = PicoGraphics(display=DISPLAY_PICO_DISPLAY, rotate=0)
+button_a = Button(12)
+button_b = Button(13)
+button_x = Button(14)
+button_y = Button(15)
+led = RGBLED(6, 7, 8)
+
 
 def circle(xpos0, ypos0, rad):
     x = rad - 1
@@ -36,29 +44,35 @@ def circle(xpos0, ypos0, rad):
             err += dx - (rad << 1)
 
 
-# def check_for_buttons():
-#     global backlight
-#     global plusDays
-#     global change
-#     if display.is_pressed(display.BUTTON_X):
-#         backlight += 0.05
-#         if backlight > 1:
-#             backlight = 1
-#         display.set_backlight(backlight)
-#     elif display.is_pressed(display.BUTTON_Y):
-#         backlight -= 0.05
-#         if backlight < 0:
-#             backlight = 0
-#         display.set_backlight(backlight)
-#     if display.is_pressed(display.BUTTON_A) and display.is_pressed(display.BUTTON_B):
-#         plusDays = 0
-#         change = 2
-#     elif display.is_pressed(display.BUTTON_A):
-#         plusDays += 86400
-#         change = 3
-#     elif display.is_pressed(display.BUTTON_B):
-#         plusDays -= 86400
-#         change = 3
+def check_for_buttons():
+    global backlight
+    global plusDays
+    global change
+    if button_x.is_pressed:
+        backlight += 0.05
+        if backlight > 1:
+            backlight = 1
+        display.set_backlight(backlight)
+        print("X: ", backlight)
+        time.sleep(0.1)
+    elif button_y.is_pressed:
+        backlight -= 0.05
+        if backlight < 0:
+            backlight = 0
+        display.set_backlight(backlight)
+        time.sleep(0.1)
+    if button_a.is_pressed and button_b.is_pressed:
+        plusDays = 0
+        change = 2
+        time.sleep(0.1)
+    elif button_a.is_pressed:
+        plusDays += 86400
+        change = 3
+        time.sleep(0.1)
+    elif button_b.is_pressed:
+        plusDays -= 86400
+        change = 3
+        time.sleep(0.1)
 
 
 def set_internal_time(utc_time):
@@ -142,11 +156,11 @@ def main():
                 display.clear()
                 draw_planets(HEIGHT, ti)
                 if plusDays > 0:
-                    display.set_led(0, 50, 0)
+                    led.set_rgb(0, 50, 0)
                 elif plusDays < 0:
-                    display.set_led(50, 0, 0)
+                    led.set_rgb(50, 0, 0)
                 else:
-                    display.set_led(0, 0, 0)
+                    led.set_rgb(0, 0, 0)
                 change = 0
             else:
                 change -= 1
@@ -169,7 +183,7 @@ def main():
         display.set_pen(display.create_pen(130, 255, 100))
         display.text("%02d:%02d" % (ti[3], ti[4]), 132, 105, 99, 4)
         display.update()
-        #check_for_buttons()
+        check_for_buttons()
         time.sleep(0.01)
 
 time.sleep(0.5)
