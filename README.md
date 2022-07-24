@@ -1,3 +1,7 @@
+## _NOTE: This fork to update support for latest Pinoroni MicroPython build...prepping for Pico W support. Not fully functional at this time_
+
+----
+
 # Pico Solar System
 
 A miniature device depicting the relative position of the planets in Solar System.
@@ -12,8 +16,8 @@ A miniature device depicting the relative position of the planets in Solar Syste
 
 ### Software
 #### MicroPython
-The software is written in MicroPython 1.15 and uses a custom build from Pimoroni which includes drivers for the display.
-Download it from the official Pimoroni repository [here](https://github.com/pimoroni/pimoroni-pico/releases/tag/v0.2.1).
+The software is written in MicroPython 1.19 and uses a custom build from Pimoroni which includes drivers for the display.
+Download it from the official Pimoroni repository [here](https://github.com/pimoroni/pimoroni-pico/releases).
 
 1. Download the MicroPython UF2.
 2. Push and hold the BOOTSEL button and plug your Pico into the USB port of your computer. Release the BOOTSEL button after your Pico is connected.

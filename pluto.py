@@ -37,7 +37,7 @@ class Pluto:
             self.x = self.x_min
 
     def draw(self):
-        self.display.set_pen(156, 166, 183)
+        self.display.set_pen(self.display.create_pen(156, 166, 183))
         self.display.circle(int(self.x), int(self.y), Pluto.R)
 
     def reset(self):
