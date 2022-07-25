@@ -98,6 +98,12 @@ def main():
             print("Waiting to connect:")
             time.sleep(1)
         print(wlan.ifconfig())
+        print("Current time: ", time.localtime())
+        print("Setting time via ntp...")
+        import ntptime
+        ntptime.settime()
+        print("Time set: ", time.localtime())
+
     else:
         import ds3231
         ds = ds3231.ds3231()
