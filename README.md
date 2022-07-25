@@ -1,4 +1,4 @@
-## _NOTE: This fork to update support for latest Pinoroni MicroPython build...prepping for Pico W support. Not fully functional at this time_
+## _NOTE: This fork to update support for latest Pimoroni MicroPython build...prepping for Pico W support. Not fully functional at this time_
 
 ----
 
