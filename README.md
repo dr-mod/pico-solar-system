@@ -1,4 +1,8 @@
-## _NOTE: This fork to update support for latest Pimoroni MicroPython build...prepping for Pico W support. Not fully functional at this time_
+## _NOTE: This fork beta-quality at best._
+
+Update support for latest Pimoroni MicroPython build and adding Pico W support.
+
+To test with Pico W, follow instructions below except rename wifi_config_sample.py to wifi_config.py and set your network SSID and key in the file before uploading to Pico W.
 
 ----
 

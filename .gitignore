@@ -1,3 +1,6 @@
+# Wi-Fi Configuration
+wifi_config.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

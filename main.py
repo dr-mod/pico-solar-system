@@ -53,14 +53,11 @@ def check_for_buttons():
         if backlight > 1:
             backlight = 1
         display.set_backlight(backlight)
-        print("X: ", backlight)
-        time.sleep(0.1)
     elif button_y.is_pressed:
         backlight -= 0.05
         if backlight < 0:
             backlight = 0
         display.set_backlight(backlight)
-        time.sleep(0.1)
     if button_a.is_pressed and button_b.is_pressed:
         plusDays = 0
         change = 2
@@ -68,11 +65,9 @@ def check_for_buttons():
     elif button_a.is_pressed:
         plusDays += 86400
         change = 3
-        time.sleep(0.1)
     elif button_b.is_pressed:
         plusDays -= 86400
         change = 3
-        time.sleep(0.1)
 
 
 def set_internal_time(utc_time):
@@ -87,10 +82,26 @@ def set_internal_time(utc_time):
 def main():
     global change
     import planets
-    import ds3231
     from pluto import Pluto
-    ds = ds3231.ds3231()
-    set_internal_time(ds.read_time())
+
+    try:
+        import wifi_config
+    except ImportError:
+        pass
+
+    if(wifi_config.ssid and wifi_config.key):
+        import network
+        wlan = network.WLAN(network.STA_IF)
+        wlan.active(True)
+        wlan.connect(wifi_config.ssid, wifi_config.key)
+        while not wlan.isconnected() and wlan.status() >= 0:
+            print("Waiting to connect:")
+            time.sleep(1)
+        print(wlan.ifconfig())
+    else:
+        import ds3231
+        ds = ds3231.ds3231()
+        set_internal_time(ds.read_time())
 
     def draw_planets(HEIGHT, ti):
         PL_CENTER = (68, int(HEIGHT / 2))
@@ -116,8 +127,6 @@ def main():
 
     w = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     m = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    #buf = bytearray(display.get_bounds()[1] * display.get_bounds()[0] * 2)
-    #display.init(buf)
     display.set_pen(display.create_pen(0, 0, 0))
     display.clear()
     display.update()
