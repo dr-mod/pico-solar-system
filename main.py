@@ -17,6 +17,8 @@ button_b = Button(13)
 button_x = Button(14)
 button_y = Button(15)
 led = RGBLED(6, 7, 8)
+led.set_rgb(0,0,0)
+
 
 
 def circle(xpos0, ypos0, rad):
@@ -93,17 +95,24 @@ def main():
         import network
         wlan = network.WLAN(network.STA_IF)
         wlan.active(True)
+        print("Connecting to:", wifi_config.ssid)
         wlan.connect(wifi_config.ssid, wifi_config.key)
         while not wlan.isconnected() and wlan.status() >= 0:
-            print("Waiting to connect:")
-            time.sleep(1)
+            print("Waiting for connection...")
+            time.sleep(5)
         print(wlan.ifconfig())
-        print("Current time: ", time.localtime())
+        print("Pico clock:", time.localtime())
         print("Setting time via ntp...")
         import ntptime
-        ntptime.settime()
-        print("Time set: ", time.localtime())
-
+        ntpsuccess = False
+        while not ntpsuccess:
+            try: 
+                ntptime.settime()
+                print("Time set: ", time.localtime())
+                ntpsuccess = True
+            except:
+                print("NTP failure. Retrying.")
+                time.sleep(5)
     else:
         import ds3231
         ds = ds3231.ds3231()
