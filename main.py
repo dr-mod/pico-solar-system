@@ -88,10 +88,11 @@ def main():
 
     try:
         import wifi_config
+        use_wifi = True
     except ImportError:
-        pass
+        use_wifi = False
 
-    if(wifi_config.ssid and wifi_config.key):
+    if(use_wifi):
         import network
         wlan = network.WLAN(network.STA_IF)
         wlan.active(True)
