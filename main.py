@@ -63,13 +63,15 @@ def check_for_buttons():
     if button_a.is_pressed and button_b.is_pressed:
         plusDays = 0
         change = 2
-        time.sleep(0.1)
+        time.sleep(0.2)
     elif button_a.is_pressed:
         plusDays += 86400
         change = 3
+        time.sleep(0.05)
     elif button_b.is_pressed:
         plusDays -= 86400
         change = 3
+        time.sleep(0.05)
 
 
 def set_internal_time(utc_time):
