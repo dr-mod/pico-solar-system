@@ -1,11 +1,3 @@
-## _NOTE: This fork beta-quality at best._
-
-Update support for latest Pimoroni MicroPython build and adding Pico W support.
-
-To test with Pico W, follow instructions below except rename wifi_config_sample.py to wifi_config.py and set your network SSID and key in the file before uploading to Pico W.
-
-----
-
 # Pico Solar System
 
 A miniature device depicting the relative position of the planets in Solar System.
@@ -63,6 +55,7 @@ rtc.set_time(time.time())
 
 ### Case 
 A 3d printable case for this project can be found [here](https://www.printables.com/model/237722-raspberry-pi-pico-rtc-display-case).
+
 A remixed case for the Pico W and display (without the RTC) can be found [here](https://www.printables.com/model/261540).
 
 ### Support the project
