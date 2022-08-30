@@ -1,4 +1,4 @@
-from picographics import PicoGraphics, DISPLAY_PICO_DISPLAY
+from picographics import PicoGraphics, DISPLAY_PICO_DISPLAY, PEN_RGB565
 from pimoroni import Button, RGBLED
 import time
 import math
@@ -11,7 +11,7 @@ backlight = 0.7
 plusDays = 0
 change = 0
 
-display = PicoGraphics(display=DISPLAY_PICO_DISPLAY, rotate=0)
+display = PicoGraphics(display=DISPLAY_PICO_DISPLAY, rotate=0, pen_type=PEN_RGB565)
 button_a = Button(12)
 button_b = Button(13)
 button_x = Button(14)
