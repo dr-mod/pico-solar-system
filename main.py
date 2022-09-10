@@ -87,39 +87,7 @@ def main():
     global change
     import planets
     from pluto import Pluto
-
-    try:
-        import wifi_config
-        use_wifi = True
-    except ImportError:
-        use_wifi = False
-
-    if(use_wifi):
-        import network
-        wlan = network.WLAN(network.STA_IF)
-        wlan.active(True)
-        print("Connecting to:", wifi_config.ssid)
-        wlan.connect(wifi_config.ssid, wifi_config.key)
-        while not wlan.isconnected() and wlan.status() >= 0:
-            print("Waiting for connection...")
-            time.sleep(5)
-        print(wlan.ifconfig())
-        print("Pico clock:", time.localtime())
-        print("Setting time via ntp...")
-        import ntptime
-        ntpsuccess = False
-        while not ntpsuccess:
-            try: 
-                ntptime.settime()
-                print("Time set: ", time.localtime())
-                ntpsuccess = True
-            except:
-                print("NTP failure. Retrying.")
-                time.sleep(5)
-    else:
-        import ds3231
-        ds = ds3231.ds3231()
-        set_internal_time(ds.read_time())
+    set_time()
 
     def draw_planets(HEIGHT, ti):
         PL_CENTER = (68, int(HEIGHT / 2))
@@ -150,9 +118,7 @@ def main():
     display.update()
     display.set_backlight(0.7)
     gc.collect()
-    # _thread.start_new_thread(thread2, ())
 
-    # WIDTH = const(240)
     HEIGHT = const(135)
 
     mi = -1
@@ -212,6 +178,41 @@ def main():
         display.update()
         check_for_buttons()
         time.sleep(0.01)
+
+
+def set_time():
+    try:
+        import wifi_config
+        set_time_ntp(wifi_config)
+    except ImportError:
+        ds3231
+        ds = ds3231.ds3231()
+        set_internal_time(ds.read_time())
+
+
+def set_time_ntp(wifi_config):
+    import network
+    wlan = network.WLAN(network.STA_IF)
+    wlan.active(True)
+    print("Connecting to:", wifi_config.ssid)
+    wlan.connect(wifi_config.ssid, wifi_config.key)
+    while not wlan.isconnected() and wlan.status() >= 0:
+        print("Waiting for connection...")
+        time.sleep(5)
+    print(wlan.ifconfig())
+    print("Pico clock:", time.localtime())
+    print("Setting time via ntp...")
+    import ntptime
+    ntpsuccess = False
+    while not ntpsuccess:
+        try:
+            ntptime.settime()
+            print("Time set: ", time.localtime())
+            ntpsuccess = True
+        except:
+            print("NTP failure. Retrying.")
+            time.sleep(5)
+
 
 time.sleep(0.5)
 main()
