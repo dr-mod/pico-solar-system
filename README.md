@@ -5,15 +5,16 @@ A miniature device depicting the relative position of the planets in Solar Syste
 ![pico](docs/pico.jpeg)
 
 ### Hardware
-* Raspberry Pi Pico
-* Precision RTC Module (DS3231)
+* Raspberry Pi Pico and time source
+  * Pico + Precision RTC Module (DS3231)
+  * OR Pico W + available Wi-Fi network
 * Pico Display Pack
 
 
 ### Software
 #### MicroPython
-The software is written in MicroPython 1.15 and uses a custom build from Pimoroni which includes drivers for the display.
-Download it from the official Pimoroni repository [here](https://github.com/pimoroni/pimoroni-pico/releases/tag/v0.2.1).
+The software is written in MicroPython 1.19 and uses a custom build from Pimoroni which includes drivers for the display.
+Download it from the official Pimoroni repository [here](https://github.com/pimoroni/pimoroni-pico/releases).
 
 1. Download the MicroPython UF2.
 2. Push and hold the BOOTSEL button and plug your Pico into the USB port of your computer. Release the BOOTSEL button after your Pico is connected.
@@ -35,12 +36,14 @@ git clone https://github.com/dr-mod/pico-solar-system.git
 ```
 cd pico-solar-system
 ```
-3. Copy required python files to your pico
+3. (If using Wi-Fi), rename wifi_config_sample.py to wifi_config.py and edit to include your Wi-Fi information
+
+4. Copy required python files to your pico
 ```
 rshell
 cp *.py /pyboard/
 ```
-4. Set time & configure the RTC module 
+5. (If using RTC) Set time & configure the RTC module 
 ```
 repl
 
@@ -52,6 +55,8 @@ rtc.set_time(time.time())
 
 ### Case 
 A 3d printable case for this project can be found [here](https://www.printables.com/model/237722-raspberry-pi-pico-rtc-display-case).
+
+A remixed case for the Pico W and display (without the RTC) can be found [here](https://www.printables.com/model/261540).
 
 ### Support the project
 If you would like to support what I do and keep me caffeinated, you can do it here:

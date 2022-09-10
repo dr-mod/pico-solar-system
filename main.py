@@ -1,4 +1,5 @@
-import picodisplay as display
+from picographics import PicoGraphics, DISPLAY_PICO_DISPLAY, PEN_RGB565
+from pimoroni import Button, RGBLED
 import time
 import math
 import gc
@@ -9,6 +10,16 @@ gc.enable()
 backlight = 0.7
 plusDays = 0
 change = 0
+
+display = PicoGraphics(display=DISPLAY_PICO_DISPLAY, rotate=0, pen_type=PEN_RGB565)
+button_a = Button(12)
+button_b = Button(13)
+button_x = Button(14)
+button_y = Button(15)
+led = RGBLED(6, 7, 8)
+led.set_rgb(0,0,0)
+
+
 
 def circle(xpos0, ypos0, rad):
     x = rad - 1
@@ -39,25 +50,28 @@ def check_for_buttons():
     global backlight
     global plusDays
     global change
-    if display.is_pressed(display.BUTTON_X):
+    if button_x.is_pressed:
         backlight += 0.05
         if backlight > 1:
             backlight = 1
         display.set_backlight(backlight)
-    elif display.is_pressed(display.BUTTON_Y):
+    elif button_y.is_pressed:
         backlight -= 0.05
         if backlight < 0:
             backlight = 0
         display.set_backlight(backlight)
-    if display.is_pressed(display.BUTTON_A) and display.is_pressed(display.BUTTON_B):
+    if button_a.is_pressed and button_b.is_pressed:
         plusDays = 0
         change = 2
-    elif display.is_pressed(display.BUTTON_A):
+        time.sleep(0.2)
+    elif button_a.is_pressed:
         plusDays += 86400
         change = 3
-    elif display.is_pressed(display.BUTTON_B):
+        time.sleep(0.05)
+    elif button_b.is_pressed:
         plusDays -= 86400
         change = 3
+        time.sleep(0.05)
 
 
 def set_internal_time(utc_time):
@@ -72,20 +86,50 @@ def set_internal_time(utc_time):
 def main():
     global change
     import planets
-    import ds3231
     from pluto import Pluto
-    ds = ds3231.ds3231()
-    set_internal_time(ds.read_time())
+
+    try:
+        import wifi_config
+        use_wifi = True
+    except ImportError:
+        use_wifi = False
+
+    if(use_wifi):
+        import network
+        wlan = network.WLAN(network.STA_IF)
+        wlan.active(True)
+        print("Connecting to:", wifi_config.ssid)
+        wlan.connect(wifi_config.ssid, wifi_config.key)
+        while not wlan.isconnected() and wlan.status() >= 0:
+            print("Waiting for connection...")
+            time.sleep(5)
+        print(wlan.ifconfig())
+        print("Pico clock:", time.localtime())
+        print("Setting time via ntp...")
+        import ntptime
+        ntpsuccess = False
+        while not ntpsuccess:
+            try: 
+                ntptime.settime()
+                print("Time set: ", time.localtime())
+                ntpsuccess = True
+            except:
+                print("NTP failure. Retrying.")
+                time.sleep(5)
+    else:
+        import ds3231
+        ds = ds3231.ds3231()
+        set_internal_time(ds.read_time())
 
     def draw_planets(HEIGHT, ti):
         PL_CENTER = (68, int(HEIGHT / 2))
         planets_dict = planets.coordinates(ti[0], ti[1], ti[2], ti[3], ti[4])
         # t = time.ticks_ms()
-        display.set_pen(255, 255, 0)
+        display.set_pen(display.create_pen(255, 255, 0))
         display.circle(int(PL_CENTER[0]), int(PL_CENTER[1]), 4)
         for i, el in enumerate(planets_dict):
             r = 8 * (i + 1) + 2
-            display.set_pen(40, 40, 40)
+            display.set_pen(display.create_pen(40, 40, 40))
             circle(PL_CENTER[0], PL_CENTER[1], r)
             feta = math.atan2(el[0], el[1])
             coordinates = (r * math.sin(feta), r * math.cos(feta))
@@ -94,16 +138,14 @@ def main():
                 x = planets.planets_a[i][0][ar] - 50 + coordinates[0]
                 y = planets.planets_a[i][0][ar + 1] - 50 + coordinates[1]
                 if x >= 0 and y >= 0:
-                    display.set_pen(planets.planets_a[i][0][ar + 2], planets.planets_a[i][0][ar + 3],
-                                    planets.planets_a[i][0][ar + 4])
+                    display.set_pen(display.create_pen(planets.planets_a[i][0][ar + 2], planets.planets_a[i][0][ar + 3],
+                                    planets.planets_a[i][0][ar + 4]))
                     display.pixel(int(x), int(y))
         # print("draw = " + str(time.ticks_diff(t, time.ticks_ms())))
 
     w = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     m = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    buf = bytearray(display.get_width() * display.get_height() * 2)
-    display.init(buf)
-    display.set_pen(0, 0, 0)
+    display.set_pen(display.create_pen(0, 0, 0))
     display.clear()
     display.update()
     display.set_backlight(0.7)
@@ -137,20 +179,20 @@ def main():
 
         if change > 0:
             if change == 1:
-                display.set_pen(0, 0, 0)
+                display.set_pen(display.create_pen(0, 0, 0))
                 display.clear()
                 draw_planets(HEIGHT, ti)
                 if plusDays > 0:
-                    display.set_led(0, 50, 0)
+                    led.set_rgb(0, 50, 0)
                 elif plusDays < 0:
-                    display.set_led(50, 0, 0)
+                    led.set_rgb(50, 0, 0)
                 else:
-                    display.set_led(0, 0, 0)
+                    led.set_rgb(0, 0, 0)
                 change = 0
             else:
                 change -= 1
 
-        display.set_pen(0, 0, 0)
+        display.set_pen(display.create_pen(0, 0, 0))
         display.rectangle(140, 0, 100, HEIGHT)
         display.rectangle(130, 0, 110, 35)
         display.rectangle(130, 93, 110, HEIGHT - 93)
@@ -161,11 +203,11 @@ def main():
         pl.step(ti[5], ticks_dif)
         pl.draw()
 
-        display.set_pen(244, 170, 30)
+        display.set_pen(display.create_pen(244, 170, 30))
         display.text("%02d %s %d " % (ti[2], m[ti[1] - 1], ti[0]), 132, 7, 70, 2)
-        display.set_pen(65, 129, 50)
+        display.set_pen(display.create_pen(65, 129, 50))
         display.text(w[ti[6]], 135, 93, 99, 2)
-        display.set_pen(130, 255, 100)
+        display.set_pen(display.create_pen(130, 255, 100))
         display.text("%02d:%02d" % (ti[3], ti[4]), 132, 105, 99, 4)
         display.update()
         check_for_buttons()
