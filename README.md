@@ -55,6 +55,10 @@ import ds3231
 rtc = ds3231.ds3231()
 rtc.set_time(time.time())
 ```
+This may be in UTC time. If it is, and you want to offset your timezone in seconds, you can do that (example here is EDT)
+```
+rtc.set_time(time.time()-14400)
+```
 
 ### Case 
 A 3d printable case for this project can be found [here](https://www.printables.com/model/237722-raspberry-pi-pico-rtc-display-case).
